@@ -109,7 +109,7 @@
                     <h3 class="text-center fw-bold my-2">LOGIN</h3>
                 </div>
                 <div class="card-body p-4">
-                    <form action="" method="POST">
+                    <form action="{{ route('userLogin') }}" method="POST">
                         @csrf
                         <div class="form-floating mb-4">
                             <input class="form-control" id="loginEmail" type="email" name="email" placeholder="name@example.com" />

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class userController extends Controller
 {
@@ -21,6 +22,35 @@ class userController extends Controller
     public function create()
     {
         return view('users/userIndex');
+    }
+    public function login(Request $request)
+    {
+        $loginData = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'min:8', 'max:16']
+        ], [
+            'email.required' => 'Email is required!',
+            'email.email' =>   'Please enter a valid Email address',
+            'password.required' => 'Password is required!',
+            'password.min' => 'The password must be at least 8 characters',
+            'password.max' => 'The password must not be greater than 16 characters'
+        ]);
+    
+        if (Auth::attempt(['email' => $loginData['email'], 'password' => $loginData['password']])) {
+            $request->session()->regenerate();
+
+            $user = Auth::user();
+
+            if($user->role == 'admin'){
+                return redirect()->route('adminIndex')->with('success', 'Hello Admin!');
+            }else{
+                return redirect()->route('userIndex')->with('success', 'Login Successfully');
+            }
+        }
+    
+        return back()->withErrors([
+            'email' => 'Your email does not match our records.'
+        ]);
     }
 
     /**
