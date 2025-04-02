@@ -1,12 +1,8 @@
-/* admin.css */
-
-/* General Body Styling */
 body {
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
     background-color: #f8f9fa;
 }
 
-/* Sidebar Styling */
 .sidebar {
     position: fixed;
     top: 0;
@@ -58,12 +54,11 @@ body {
     overflow-y: auto;
 }
 
-/* Media Queries for Responsive Sidebar */
 @media (max-width: 767.98px) {
     .sidebar {
         transform: translateX(-100%);
         padding-top: 0;
-        top: 56px; /* Height of navbar */
+        top: 56px;
     }
     
     .sidebar.show {
@@ -75,18 +70,15 @@ body {
     }
 }
 
-/* Header & Navbar Styling */
 .navbar-brand {
     padding-top: .75rem;
     padding-bottom: .75rem;
 }
 
-/* Main Content Styling */
 main {
     transition: margin-left 0.3s;
 }
 
-/* Card Styling */
 .card {
     border-radius: 10px;
     transition: transform 0.2s, box-shadow 0.2s;
@@ -103,7 +95,6 @@ main {
     border-bottom: 0;
 }
 
-/* Table Styling */
 .table-responsive {
     border-radius: 10px;
     overflow: hidden;
@@ -118,29 +109,24 @@ main {
     padding: 0.25rem 0.5rem;
 }
 
-/* Progress Bar Styling */
 .progress {
     height: 8px;
     border-radius: 4px;
     background-color: #edf2f9;
 }
 
-/* Footer Styling */
 footer {
     background-color: #212529;
 }
 
-/* Animation for Hover Effects */
 .btn, .nav-link, .card {
     transition: all 0.2s ease;
 }
 
-/* Utility Classes */
 .text-light-emphasis {
     color: rgba(255, 255, 255, 0.75) !important;
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -157,3 +143,17 @@ footer {
 ::-webkit-scrollbar-thumb:hover {
     background: #6c757d;
 }
+.custom-marker {
+    background: transparent;
+    border: none;
+}
+
+.custom-marker svg {
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));
+}
+
+.marker-hospital { color: #ee82ee; }
+.marker-danger { color: #ff3030; }
+.marker-evacuation { color: #98fb98; }
+.marker-police { color: #91a3b0; }
+.marker-default { color: #30a2ff; }

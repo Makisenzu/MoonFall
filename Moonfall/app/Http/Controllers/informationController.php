@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Information;
 use Illuminate\Http\Request;
 
 class informationController extends Controller
@@ -11,7 +12,7 @@ class informationController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -19,7 +20,8 @@ class informationController extends Controller
      */
     public function create()
     {
-        //
+        $newsData = Information::all();
+        return view('admin/news', compact('newsData'));
     }
 
     /**

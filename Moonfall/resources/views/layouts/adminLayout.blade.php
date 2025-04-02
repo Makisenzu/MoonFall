@@ -22,23 +22,6 @@
                 <span class="fw-bold">MoonFall Admin</span>
             </a>
             <div class="ms-auto d-flex">
-                <div class="dropdown">
-                    <button class="btn btn-dark position-relative" type="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-bell"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            3
-                            <span class="visually-hidden">unread notifications</span>
-                        </span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow">
-                        <li><h6 class="dropdown-header">Notifications</h6></li>
-                        <li><a class="dropdown-item" href="#">New safe zone registered</a></li>
-                        <li><a class="dropdown-item" href="#">Volunteer application received</a></li>
-                        <li><a class="dropdown-item" href="#">System update completed</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-center" href="#">View all</a></li>
-                    </ul>
-                </div>
                 <div class="dropdown ms-3">
                     <button class="btn btn-dark d-flex align-items-center" type="button" data-bs-toggle="dropdown">
                         <div class="rounded-circle bg-light text-dark d-flex justify-content-center align-items-center me-2" style="width: 24px; height: 24px;">
@@ -72,10 +55,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ route('adminNewsCreate') }}">
+                                @php use App\Models\Information; @endphp
                                 <i class="fas fa-newspaper"></i>
                                 <span>News</span>
-                                <span class="badge bg-primary rounded-pill ms-auto">4</span>
+                                <span class="badge bg-primary rounded-pill ms-auto">{{ Information::count()}}</span>
                             </a>
                         </li>
                         <li class="nav-item">

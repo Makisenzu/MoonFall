@@ -11,26 +11,41 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('safeZoneForm');
     const messagesDiv = document.getElementById('formMessages');
 
+    function getZoneColor(occupation) {
+        switch(occupation) {
+            case 'Danger': return '#ff3030';
+            case 'Hospital': return '#ee82ee';
+            case 'Evacuation': return '#98fb98';
+            case 'Police': return '#91a3b0';
+            default: return '#30a2ff';
+        }
+    }
+
+    function createMarkerIcon(color) {
+        return L.divIcon({
+            className: 'custom-marker',
+            html: `<svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                     <path fill="${color}" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                   </svg>`,
+            iconSize: [24, 24],
+            iconAnchor: [12, 24]
+        });
+    }
+
     function addZoneToMap(zone) {
         const coords = [zone.latitude, zone.longitude];
-        let circleColor = '#30a2ff';
-        if (zone.occupation === 'Danger') {
-            circleColor = '#ff3030';
-        }else if (zone.occupation === 'Hospital'){
-            circleColor = '#ee82ee';
-        }else if (zone.occupation === 'Evacuation'){
-            circleColor = '#98fb98';
-        }else if (zone.occupation === 'Police'){
-            circleColor = '#91a3b0';
-        }
+        const zoneColor = getZoneColor(zone.occupation);
         
         const circle = L.circle(coords, {
             radius: zone.radius,
-            color: circleColor,
-            fillColor: circleColor,
+            color: zoneColor,
+            fillColor: zoneColor,
             fillOpacity: 0.3
         }).addTo(map);
-        const marker = L.marker(coords).addTo(map)
+        
+        const marker = L.marker(coords, {
+            icon: createMarkerIcon(zoneColor)
+        }).addTo(map)
             .bindPopup(`
                 <b>${zone.location_name}</b><br>
                 Type: ${zone.occupation}<br>
@@ -67,18 +82,36 @@ document.addEventListener('DOMContentLoaded', function() {
         if (tempMarker) map.removeLayer(tempMarker);
         if (tempCircle) map.removeLayer(tempCircle);
 
-        tempMarker = L.marker(coords).addTo(map)
+        const occupation = form.elements.occupation.value;
+        const tempColor = getZoneColor(occupation);
+        
+        tempMarker = L.marker(coords, {
+            icon: createMarkerIcon(tempColor)
+        }).addTo(map)
             .bindPopup('New Zone Location').openPopup();
         
         tempCircle = L.circle(coords, {
             radius: radius,
-            color: '#30a2ff',
-            fillColor: '#30a2ff',
+            color: tempColor,
+            fillColor: tempColor,
             fillOpacity: 0.3
         }).addTo(map);
         
         form.elements.latitude.value = coords.lat.toFixed(8);
         form.elements.longitude.value = coords.lng.toFixed(8);
+    });
+
+    form.elements.occupation.addEventListener('change', function() {
+        if (!tempMarker || !tempCircle) return;
+        
+        const newColor = getZoneColor(this.value);
+        
+        tempMarker.setIcon(createMarkerIcon(newColor));
+        
+        tempCircle.setStyle({
+            color: newColor,
+            fillColor: newColor
+        });
     });
 
     form.elements.radius.addEventListener('input', function() {
@@ -121,9 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.success) {
                 showMessage(data.message, 'success');
-                
                 addZoneToMap(data.zone);
-                
                 form.reset();
                 form.elements.radius.value = 500;
                 
@@ -131,7 +162,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (tempCircle) map.removeLayer(tempCircle);
                 tempMarker = null;
                 tempCircle = null;
-                
             } else {
                 showMessage(data.message || 'Failed to save safe zone', 'error');
             }
@@ -165,5 +195,6 @@ document.addEventListener('DOMContentLoaded', function() {
             alertDiv.remove();
         }, 5000);
     }
+    
     loadAllZones();
 });
