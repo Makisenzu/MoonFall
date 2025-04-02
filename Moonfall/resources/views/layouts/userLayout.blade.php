@@ -48,6 +48,7 @@
                                     <i class="fas fa-user-circle me-1"></i> {{ Auth::user()->name }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-house"></i> Dashboard</a></li>
                                     <li><a class="dropdown-item" href="{{ route('userViewZone') }}"><i class="fas fa-shield-alt me-2"></i> Safe Zone</a></li>
                                     <li><a class="dropdown-item" href="#"><i class="fas fa-hands-helping me-2"></i> Apply for Volunteer</a></li>
                                     <li><a class="dropdown-item" href="#"><i class="fas fa-newspaper me-2"></i> News</a></li>
