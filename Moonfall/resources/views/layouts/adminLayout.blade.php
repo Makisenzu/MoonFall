@@ -14,13 +14,10 @@
 <body class="d-flex flex-column min-vh-100">
     <header class="navbar navbar-dark bg-dark sticky-top shadow-sm">
         <div class="container-fluid px-4">
-            <button class="navbar-toggler border-0 p-0 me-3" id="toggleSidebar" type="button">
-                <i class="fa-solid fa-bars"></i>
+            <button class="navbar-toggler border-0 p-0 me-3"type="button">
+                <i class="fa-solid fa-moon"></i>
             </button>
             <a class="navbar-brand d-flex align-items-center" href="#">
-                <span class="bg-light rounded-circle p-1 d-flex justify-content-center align-items-center me-2" style="width: 32px; height: 32px;">
-                    <i class="fas fa-moon text-dark"></i>
-                </span>
                 <span class="fw-bold">MoonFall Admin</span>
             </a>
             <div class="ms-auto d-flex">
@@ -61,14 +58,14 @@
     
     <div class="container-fluid">
         <div class="row">
-            <aside id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
-                <div class="position-sticky pt-3">
+            <aside id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
+                <div class="sidebar-sticky pt-3">
                     <div class="px-3 mb-4">
-                        <h6 class="text-uppercase text-light-emphasis fw-bold small">CONTROL PANEL</h6>
+                        <h6 class="text-uppercase text-light-emphasis fw-bold small"></h6>
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">
+                            <a class="nav-link active" href="{{ route('adminIndex') }}">
                                 <i class="fas fa-home"></i>
                                 <span>Dashboard</span>
                             </a>
@@ -81,7 +78,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ route('adminZoneIndex') }}">
                                 <i class="fa-solid fa-shield-halved"></i>
                                 <span>Safe Zone</span>
                             </a>
@@ -100,14 +97,12 @@
                         </li>
                         
                         <li class="border-top my-3"></li>
-                        
                     </ul>
                 </div>
             </aside>
             
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4 bg-light">
                 @yield('content')
-                
             </main>
         </div>
     </div>

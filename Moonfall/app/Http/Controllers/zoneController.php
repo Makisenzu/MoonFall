@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Zone;
 use Illuminate\Http\Request;
 
 class zoneController extends Controller
@@ -11,7 +12,8 @@ class zoneController extends Controller
      */
     public function index()
     {
-        //
+        $zoneData = Zone::all();
+        return view('admin/safeZone', compact('zoneData'));
     }
 
     /**

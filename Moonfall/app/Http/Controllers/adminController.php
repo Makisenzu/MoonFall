@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Information;
 use App\Models\User;
+use App\Models\Volunteer;
+use App\Models\Zone;
 use Illuminate\Http\Request;
 
 class adminController extends Controller
@@ -13,7 +16,9 @@ class adminController extends Controller
     public function index()
     {
         $userCount = User::where('role', '!=', 'admin')->count();
-        return view('admin/adminIndex', compact('userCount'));
+        $zoneCount = Zone::count();
+        $volunteerCount = Volunteer::count();
+        return view('admin/adminIndex', compact('userCount', 'zoneCount', 'volunteerCount'));
     }
 
     /**

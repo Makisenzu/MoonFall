@@ -10,4 +10,7 @@ class Applicant extends Model
         'applicant_id',
         'status'
     ];
+    public function user(){
+        return $this->belongsTo(User::class, 'applicant_id', 'id');
+    }
 }

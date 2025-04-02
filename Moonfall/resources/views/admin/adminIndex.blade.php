@@ -2,16 +2,6 @@
 @section('content')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Dashboard</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
-        <div class="btn-group me-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-        </div>
-        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <i class="fas fa-calendar-alt"></i>
-            This week
-        </button>
-    </div>
 </div>
 <div class="row g-4 mb-4">
     <div class="col-md-6 col-xl-3">
@@ -20,11 +10,7 @@
                 <div class="d-flex align-items-start justify-content-between">
                     <div>
                         <p class="text-muted mb-1">Total Users</p>
-                        <h4 class="mb-0">9,823</h4>
-                        <p class="small text-success mt-2 mb-0">
-                            <i class="fas fa-arrow-up me-1"></i>
-                            <span>5.3% increase</span>
-                        </p>
+                        <h4 class="mb-0">{{ $userCount}}</h4>
                     </div>
                     <div class="bg-primary bg-opacity-10 rounded-3 p-3">
                         <i class="fas fa-users fa-2x text-primary"></i>
@@ -39,12 +25,8 @@
             <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between">
                     <div>
-                        <p class="text-muted mb-1">Safe Zones</p>
-                        <h4 class="mb-0">237</h4>
-                        <p class="small text-success mt-2 mb-0">
-                            <i class="fas fa-arrow-up me-1"></i>
-                            <span>12.1% increase</span>
-                        </p>
+                        <p class="text-muted mb-1">Zones</p>
+                        <h4 class="mb-0">{{ $zoneCount }}</h4>
                     </div>
                     <div class="bg-success bg-opacity-10 rounded-3 p-3">
                         <i class="fas fa-shield-alt fa-2x text-success"></i>
@@ -60,11 +42,7 @@
                 <div class="d-flex align-items-start justify-content-between">
                     <div>
                         <p class="text-muted mb-1">Volunteers</p>
-                        <h4 class="mb-0">1,428</h4>
-                        <p class="small text-success mt-2 mb-0">
-                            <i class="fas fa-arrow-up me-1"></i>
-                            <span>8.7% increase</span>
-                        </p>
+                        <h4 class="mb-0">{{ $volunteerCount }}</h4>
                     </div>
                     <div class="bg-warning bg-opacity-10 rounded-3 p-3">
                         <i class="fas fa-user-friends fa-2x text-warning"></i>
@@ -80,7 +58,7 @@
                 <div class="d-flex align-items-start justify-content-between">
                     <div>
                         <p class="text-muted mb-1">Alerts</p>
-                        <h4 class="mb-0">8</h4>
+                        <h4 class="mb-0"></h4>
                         <p class="small text-danger mt-2 mb-0">
                             <i class="fas fa-arrow-up me-1"></i>
                             <span>2 new alerts</span>

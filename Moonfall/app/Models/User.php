@@ -28,6 +28,12 @@ class User extends Authenticatable
         'password',
 
     ];
+    public function applicants(){
+        return $this->hasMany(Applicant::class, 'applicant_id');
+    }
+    public function volunteers(){
+        return $this->hasMany(Volunteer::class, 'users_id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.
