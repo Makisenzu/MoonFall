@@ -12,8 +12,8 @@ class zoneController extends Controller
      */
     public function index()
     {
-        $zoneData = Zone::all();
-        return view('admin/safeZone', compact('zoneData'));
+        $zones = Zone::all();
+        return response()->json($zones);
     }
 
     /**
@@ -21,7 +21,7 @@ class zoneController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin/safeZone');
     }
 
     /**
@@ -29,7 +29,29 @@ class zoneController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'location_name' => 'required|string|max:255',
+            'occupation' => 'required',
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+            'radius' => 'required|integer|min:100|max:30000'
+        ]);
+    
+        try {
+            $zone = Zone::create($validated);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Safe zone created successfully',
+                'zone' => $zone
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create safe zone: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

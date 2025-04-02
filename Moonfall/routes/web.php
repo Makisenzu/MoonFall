@@ -12,4 +12,6 @@ Route::get('/', function () {
 Route::post('/userSignup', [userController::class, 'store'])->name('userStore');
 Route::post('/user', [userController::class, 'login'])->name('userLogin');
 Route::get('/adminIndex', [adminController::class, 'index'])->name('adminIndex');
-Route::get('/admin/zone', [zoneController::class, 'index'])->name('adminZoneIndex');
+Route::get('/admin/zone', [zoneController::class, 'create'])->name('adminZoneIndex');
+Route::get('/zones', [zoneController::class, 'index']);
+Route::post('/admin/zone', [zoneController::class, 'store'])->name('adminZoneStore');

@@ -25,7 +25,8 @@
             <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between">
                     <div>
-                        <p class="text-muted mb-1">Zones</p>
+                        <a href="{{ route('adminZoneIndex') }}" style="text-decoration: none" class="text-muted mb-1">Zones</a>
+                        {{-- <p class="text-muted mb-1">Zones</p> --}}
                         <h4 class="mb-0">{{ $zoneCount }}</h4>
                     </div>
                     <div class="bg-success bg-opacity-10 rounded-3 p-3">
