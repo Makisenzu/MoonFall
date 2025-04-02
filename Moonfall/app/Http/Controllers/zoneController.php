@@ -24,6 +24,10 @@ class zoneController extends Controller
         return view('admin/safeZone');
     }
 
+    public function userView(){
+        return view('users/viewZone');
+    }
+
     /**
      * Store a newly created resource in storage.
      */

@@ -27,13 +27,11 @@ document.getElementById('registrationForm').addEventListener('submit', function(
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalBtnText = submitBtn.innerHTML;
 
-    // Clear previous messages and errors
     messageDiv.innerHTML = '';
     messageDiv.className = '';
     document.querySelectorAll('.error-message').forEach(el => el.remove());
     document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
 
-    // Set loading state
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating...';
 

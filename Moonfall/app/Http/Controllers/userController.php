@@ -13,7 +13,7 @@ class userController extends Controller
      */
     public function index()
     {
-        
+        return view('users/userIndex');
     }
 
     /**
@@ -21,7 +21,7 @@ class userController extends Controller
      */
     public function create()
     {
-        return view('users/userIndex');
+        return view('users/userDashboard');
     }
     public function login(Request $request)
     {
@@ -44,7 +44,7 @@ class userController extends Controller
             if($user->role == 'admin'){
                 return redirect()->route('adminIndex')->with('success', 'Hello Admin!');
             }else{
-                return redirect()->route('userIndex')->with('success', 'Login Successfully');
+                return redirect()->route('userDashboardCreate')->with('success', 'Login Successfully');
             }
         }
     
