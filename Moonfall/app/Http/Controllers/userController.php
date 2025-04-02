@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class userController extends Controller
@@ -27,7 +28,41 @@ class userController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $data = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'lastname' => ['required', 'string', 'max:255'],
+                'password' => ['required', 'string', 'min:8', 'max:16'],
+                'email' => ['required', 'email', 'max:255', 'unique:users'],
+                'phone_number' => ['required', 'unique:users','string', 'regex:/^[0-9]+$/', 'min:7', 'max:15'],
+                'birthday' => ['required', 'date', 'before_or_equal:' . now()->subYears(13)->format('Y-m-d')],
+                'gender' => ['required', 'in:male,female,other'],
+                'picture' => ['nullable'],
+            ], [
+                'email.unique' => 'This email already existed!',
+                'phone_number.unique' => 'This number already existed!',
+                'phone_number.regex' => 'The phone number must only contain digits',
+                'birthday.before_or_equal' => 'You must be at least 13 years old to register.'
+            ]);
+            $data['password'] = bcrypt($data['password']);
+            User::create($data);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Account successfully created!'
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred. Please try again.' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
