@@ -31,8 +31,8 @@ class User extends Authenticatable
     public function applicants(){
         return $this->hasMany(Applicant::class, 'applicant_id');
     }
-    public function volunteers(){
-        return $this->hasMany(Volunteer::class, 'users_id');
+    public function volunteer(){
+        return $this->belongsTo(Volunteer::class);
     }
 
     /**

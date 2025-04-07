@@ -33,7 +33,7 @@
                     <ul class="dropdown-menu dropdown-menu-end shadow">
                         <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                        <li><a class="dropdown-item text-danger" href="{{ route('userLogout') }}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -54,6 +54,7 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('adminNewsCreate') }}">
                                 @php use App\Models\Information; @endphp
@@ -62,6 +63,7 @@
                                 <span class="badge bg-primary rounded-pill ms-auto">{{ Information::count()}}</span>
                             </a>
                         </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('adminZoneIndex') }}">
                                 <i class="fa-solid fa-shield-halved"></i>
@@ -69,7 +71,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ route('adminVolunteerIndex') }}">
                                 <i class="fas fa-user-friends"></i>
                                 <span>Volunteers</span>
                             </a>

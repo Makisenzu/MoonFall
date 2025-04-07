@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('phone_number');
             $table->string('password');
             $table->string('picture')->nullable();
+            $table->decimal('latitude', 10, 8)->nullable();
+            $table->decimal('longitude', 11, 8)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

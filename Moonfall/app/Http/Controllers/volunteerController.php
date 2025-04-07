@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Applicant;
+use App\Models\Volunteer;
 use Illuminate\Http\Request;
 
 class volunteerController extends Controller
@@ -11,7 +13,10 @@ class volunteerController extends Controller
      */
     public function index()
     {
-        //
+        $volunteerData = Volunteer::with('user')->count();
+        $pending = Applicant::where('status', 'Pending')->count();
+        $approved = Applicant::where('status', 'Approved')->count();
+        return view('admin/volunteer', compact('pending', 'approved', 'volunteerData'));
     }
 
     /**

@@ -1,5 +1,6 @@
 @extends('layouts.adminLayout')
 @section('content')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h3 class="mb-0">News Management</h3>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewsModal">
@@ -7,34 +8,6 @@
     </button>
 </div>
 <div id="alertsContainer"></div>
-<div class="card shadow-sm mb-4">
-    <div class="card-body">
-        <div class="row g-2">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <input type="text" class="form-control" id="searchNews" placeholder="Search news...">
-                    <button class="btn btn-outline-secondary" type="button" id="searchBtn">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <select class="form-select" id="urgencyFilter">
-                    <option value="">All Urgency Levels</option>
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                    <option value="Critical">Critical</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-outline-secondary w-100" id="resetFilters">
-                    Reset Filters
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="card shadow-sm">
     <div class="card-header bg-white">
         <h5 class="mb-0">News Articles</h5>
@@ -52,88 +25,42 @@
                     </tr>
                 </thead>
                 <tbody id="newsTableBody">
-                    <tr>
-                        <td>1</td>
-                        <td>Flash Flood Warning</td>
-                        <td>Flash flood warning in the eastern district due to heavy rainfall...</td>
-                        <td>
-                            <span class="badge bg-danger">Critical</span>
-                        </td>
-                        <td class="text-center">
-                            <button class="btn btn-sm btn-info view-news" data-id="1" title="View">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-primary edit-news" data-id="1" title="Edit">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-news" data-id="1" title="Delete">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Road Closure Update</td>
-                        <td>Highway 101 will be closed for maintenance between 10 PM and 5 AM...</td>
-                        <td>
-                            <span class="badge bg-warning text-dark">Medium</span>
-                        </td>
-                        <td class="text-center">
-                            <button class="btn btn-sm btn-info view-news" data-id="2" title="View">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-primary edit-news" data-id="2" title="Edit">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-news" data-id="2" title="Delete">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Community Event Announcement</td>
-                        <td>Annual community festival scheduled for this weekend at Central Park...</td>
-                        <td>
-                            <span class="badge bg-success">Low</span>
-                        </td>
-                        <td class="text-center">
-                            <button class="btn btn-sm btn-info view-news" data-id="3" title="View">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-primary edit-news" data-id="3" title="Edit">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-news" data-id="3" title="Delete">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
+                    @if ($newsData)
+                        @foreach ($newsData as $news)
+                        <tr>
+                            <td>{{$news->id}}</td>
+                            <td>{{$news->news_name}}</td>
+                            <td>{{$news->description}}</td>
+                            <td>
+                                <span class="badge bg-danger">{{$news->urgency}}</span>
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-primary edit-news" data-id="{{ $news->id }}" title="Edit">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </button>
+                                <form class="d-inline" action="{{ route('adminDeleteNews', $news->id) }}" id="deleteForm" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-sm btn-danger delete-news" data-id="{{ $news->id }}" title="Delete">
+                                        <i class="bi bi-trash"></i> DELETE
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    @else
+                        
+                    @endif
                 </tbody>
             </table>
         </div>
-    </div>
-    <div class="card-footer bg-white">
-        <nav aria-label="News pagination">
-            <ul class="pagination justify-content-center mb-0">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
-        </nav>
     </div>
 </div>
 
 <div class="modal fade" id="addNewsModal" tabindex="-1" aria-labelledby="addNewsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="addNewsForm">
+            <form id="addNewsForm" method="POST" action="{{ route('adminStoreNews') }}">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="addNewsModalLabel">Add News Article</h5>
@@ -236,25 +163,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="deleteNewsModal" tabindex="-1" aria-labelledby="deleteNewsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteNewsModalLabel">Confirm Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete the news article: "<span id="delete_news_name"></span>"?</p>
-                <p class="text-danger mb-0">This action cannot be undone.</p>
-                <input type="hidden" id="delete_news_id">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @endsection
 

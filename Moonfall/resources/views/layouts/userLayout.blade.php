@@ -48,13 +48,15 @@
                                     <i class="fas fa-user-circle me-1"></i> {{ Auth::user()->name }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('userViewZone') }}"><i class="fas fa-shield-alt me-2"></i> Safe Zone</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-hands-helping me-2"></i> Apply for Volunteer</a></li>
+                                    <li>
+                                        <button class="dropdown-item apply-volunteer-btn" type="button">
+                                            <i class="fas fa-hands-helping me-2"></i> Volunteer
+                                        </button>
+                                    </li>
                                     <li><a class="dropdown-item" href="#"><i class="fas fa-newspaper me-2"></i> News</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
-                                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <a class="dropdown-item" href="{{ route('userLogout') }}">
                                             <i class="fas fa-sign-out-alt me-2"></i> Logout
                                         </a>
                                     </li>

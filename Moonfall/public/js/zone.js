@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'Hospital': return '#ee82ee';
             case 'Evacuation': return '#98fb98';
             case 'Police': return '#91a3b0';
-            default: return '#30a2ff';
+            default: return '#30a2ff'; 
         }
     }
 

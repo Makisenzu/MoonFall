@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Information;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,8 @@ class userController extends Controller
      */
     public function create()
     {
-        return view('users/userDashboard');
+        $newsData = Information::all();
+        return view('users/userDashboard', compact('newsData'));
     }
     public function login(Request $request)
     {
@@ -93,6 +95,18 @@ class userController extends Controller
                 'message' => 'An error occurred. Please try again.' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function logout()
+    {
+        $user = Auth::user();
+        Auth::guard('web')->logout();
+        
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+    
+        
+        return view('users/userIndex');
     }
 
     /**

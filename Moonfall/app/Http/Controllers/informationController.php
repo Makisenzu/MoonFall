@@ -29,7 +29,21 @@ class informationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'news_name' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:255'],
+            'urgency' => ['required', 'string', 'max:255'],
+        ]);
+
+        $newsData = Information::create($data);
+        if ($request->wantsJson()){
+            return response()->json([
+                'success' => true,
+                'message' => 'News added successfully',
+                'shelter' => $newsData
+            ]);
+        }
+        return redirect()->route('adminNewsCreate');
     }
 
     /**
@@ -61,6 +75,9 @@ class informationController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $news = Information::findOrFail($id);
+        $news->delete();
+
+        return redirect()->route('adminNewsCreate');
     }
 }

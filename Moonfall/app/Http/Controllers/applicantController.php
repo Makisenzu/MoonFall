@@ -11,7 +11,7 @@ class applicantController extends Controller
      */
     public function index()
     {
-        //
+        return view('users/apply');
     }
 
     /**
@@ -61,4 +61,7 @@ class applicantController extends Controller
     {
         //
     }
+
+
+    
 }

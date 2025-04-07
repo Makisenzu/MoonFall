@@ -5,56 +5,9 @@
     <div class="row mb-4">
         <div class="col-lg-8">
             <h1 class="mb-2">Explore Zones</h1>
-            <p class="text-muted">Find and navigate to zones from your current location</p>
         </div>
         <div class="col-lg-4 d-flex justify-content-lg-end align-items-center">
-            <button id="currentLocationBtn" class="btn btn-outline-primary me-2">
-                <i class="bi bi-geo-alt-fill me-1"></i> Use My Location
-            </button>
             <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-funnel me-1"></i> Filter
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filterDropdown">
-                    <li><h6 class="dropdown-header">Zone Type</h6></li>
-                    <li>
-                        <div class="dropdown-item">
-                            <div class="form-check">
-                                <input class="form-check-input filter-check" type="checkbox" value="Residential" id="filterResidential" checked>
-                                <label class="form-check-label" for="filterResidential">Residential</label>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="dropdown-item">
-                            <div class="form-check">
-                                <input class="form-check-input filter-check" type="checkbox" value="Commercial" id="filterCommercial" checked>
-                                <label class="form-check-label" for="filterCommercial">Commercial</label>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="dropdown-item">
-                            <div class="form-check">
-                                <input class="form-check-input filter-check" type="checkbox" value="Industrial" id="filterIndustrial" checked>
-                                <label class="form-check-label" for="filterIndustrial">Industrial</label>
-                            </div>
-                        </div>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><h6 class="dropdown-header">Distance</h6></li>
-                    <li>
-                        <div class="dropdown-item px-3">
-                            <label for="radiusSlider" class="form-label d-flex justify-content-between">
-                                <span>Radius: </span>
-                                <span id="radiusValue">10 km</span>
-                            </label>
-                            <input type="range" class="form-range" min="1" max="50" step="1" id="radiusSlider" value="10">
-                        </div>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><button class="dropdown-item text-primary" id="resetFilters">Reset All Filters</button></li>
-                </ul>
             </div>
         </div>
     </div>
@@ -65,12 +18,6 @@
                 <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
                     <h5 class="mb-0">Zone Map</h5>
                     <div>
-                        <button id="toggleRoutesBtn" class="btn btn-sm btn-outline-secondary me-2">
-                            <i class="bi bi-map me-1"></i> Toggle Routes
-                        </button>
-                        {{-- <button id="fullscreenMapBtn" class="btn btn-sm btn-outline-secondary">
-                            <i class="bi bi-arrows-fullscreen"></i>
-                        </button> --}}
                     </div>
                 </div>
                 <div class="card-body p-0">
@@ -107,12 +54,6 @@
                 <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
                     <h5 class="mb-0">Nearby Zones</h5>
                     <div class="btn-group btn-group-sm" role="group">
-                        {{-- <button type="button" class="btn btn-outline-secondary active" id="listViewBtn">
-                            <i class="bi bi-list-ul"></i>
-                        </button> --}}
-                        {{-- <button type="button" class="btn btn-outline-secondary" id="gridViewBtn">
-                            <i class="bi bi-grid"></i>
-                        </button> --}}
                     </div>
                 </div>
                 <div class="card-body p-0">
@@ -245,9 +186,15 @@
     </div>
 
     <link href="{{ asset('css/user.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <script>
+        window.APP_CONFIG = {
+            apiKey: "{{ env('MAPBOX_API_KEY') }}"
+        };
+    </script>
     <script src="{{ asset('js/user.js') }}" defer></script>
 </div>
 @endsection

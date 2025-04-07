@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\adminController;
+use App\Http\Controllers\applicantController;
 use App\Http\Controllers\informationController;
 use App\Http\Controllers\userController;
+use App\Http\Controllers\volunteerController;
 use App\Http\Controllers\zoneController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +22,11 @@ Route::post('/admin/zone', [zoneController::class, 'store'])->name('adminZoneSto
 Route::get('/admin/news', [informationController::class, 'create'])->name('adminNewsCreate');
 
 Route::get('/user/zones', [zoneController::class, 'userView'])->name('userViewZone');
+
+Route::get('user/logout', [userController::class, 'logout'])->name('userLogout');
+Route::post('admin/news', [informationController::class, 'store'])->name('adminStoreNews');
+Route::delete('admin/news/{id}', [informationController::class, 'destroy'])->name('adminDeleteNews');
+
+Route::get('admin/volunteer', [volunteerController::class, 'index'])->name('adminVolunteerIndex');
+
+Route::get('user/applicant', [applicantController::class, 'index'])->name('userApplicant');
