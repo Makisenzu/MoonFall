@@ -30,3 +30,10 @@ Route::delete('admin/news/{id}', [informationController::class, 'destroy'])->nam
 Route::get('admin/volunteer', [volunteerController::class, 'index'])->name('adminVolunteerIndex');
 
 Route::get('user/applicant', [applicantController::class, 'index'])->name('userApplicant');
+
+Route::get('user/profile/{id}', [userController::class, 'show'])->name('userProfile');
+Route::put('user/update/{id}', [userController::class, 'update'])->name('userUpdate');
+
+Route::post('user/applied/{id}', [volunteerController::class, 'store'])->name('volunteerStore');
+Route::get('admin/applicants',[volunteerController::class, 'viewApplicants'])->name('viewApplicants');
+Route::put('admin/applicant/approved/{id}', [volunteerController::class, 'update'])->name('approvedApplicant');

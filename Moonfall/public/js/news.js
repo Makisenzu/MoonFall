@@ -332,7 +332,6 @@ function setupFilterListeners() {
 }
 
 /**
- * Filter table by search term
  * @param {string} term
  */
 function filterTable(term) {
@@ -351,7 +350,6 @@ function filterTable(term) {
 }
 
 /**
- * Filter table by urgency level
  * @param {string} urgency - Urgency level
  */
 function filterTableByUrgency(urgency) {
@@ -377,7 +375,6 @@ function filterTableByUrgency(urgency) {
 }
 
 /**
- * Show alert message
  * @param {string} message
  * @param {string} type
  */

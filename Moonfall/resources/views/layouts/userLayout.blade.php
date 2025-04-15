@@ -49,9 +49,9 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                     <li>
-                                        <button class="dropdown-item apply-volunteer-btn" type="button">
-                                            <i class="fas fa-hands-helping me-2"></i> Volunteer
-                                        </button>
+                                        <a href="{{ route('userProfile', Auth::user()->id) }} " class="dropdown-item apply-volunteer-btn">
+                                            <i class="fas fa-user me-2"></i> Profile
+                                        </a>
                                     </li>
                                     <li><a class="dropdown-item" href="#"><i class="fas fa-newspaper me-2"></i> News</a></li>
                                     <li><hr class="dropdown-divider"></li>

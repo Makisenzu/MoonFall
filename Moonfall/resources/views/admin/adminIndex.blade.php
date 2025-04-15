@@ -52,7 +52,7 @@
             </div>
         </div>
     </div>
-    
+     
     <div class="col-md-6 col-xl-3">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
@@ -71,6 +71,14 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white">
+        <h5 class="mb-0">View Location</h5>
+    </div>
+    <div class="card-body p-0">
+        <div id="allMaps" style="height: 500px; width: 100%;"></div>
     </div>
 </div>
 

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Information;
 use App\Models\User;
+use App\Models\Applicant;
+use App\Models\Information;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\Auth;
 
 class userController extends Controller
@@ -114,7 +116,9 @@ class userController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $userData = User::with(['applicant'])->findOrFail($id);
+        $applicants = Applicant::all();
+        return view('users/profile', compact('userData', 'applicants'));
     }
 
     /**
@@ -130,7 +134,45 @@ class userController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $userInfo = User::findOrFail($id);
+            $data = $request->validate([
+                'name' => ['required', 'max:100'],
+                'lastname' => ['required', 'max:100'],
+                'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $id],
+                'password' => ['nullable', 'string', 'min:8', 'max:16', 'confirmed'],
+                'phone_number' => ['required'],
+                'picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            ]);
+            if (!empty($data['password'])) {
+                $data['password'] = bcrypt($data['password']);
+            } else {
+                unset($data['password']);
+            }
+            if ($request->hasFile('picture')) {
+                $file = $request->file('picture');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads'), $filename);
+                $data['picture'] = $filename;
+            }
+            $userInfo->update($data);
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Information updated successfully!'
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred. Please try again.' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

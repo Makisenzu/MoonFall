@@ -27,7 +27,7 @@
                         </li>
                     </ul>
                     <div class="d-grid gap-2">
-                        <a href="" class="btn btn-outline-primary">View Applications</a>
+                        <a href="{{ route('viewApplicants') }}" class="btn btn-outline-primary">View Applications</a>
                     </div>
                 </div>
             </div>

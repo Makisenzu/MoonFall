@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Information;
+use App\Models\User;
 use App\Models\Zone;
 use Illuminate\Http\Request;
 
@@ -12,8 +14,20 @@ class zoneController extends Controller
      */
     public function index()
     {
-        $zones = Zone::all();
-        return response()->json($zones);
+        $zones = Zone::whereNotNull('latitude')
+                ->whereNotNull('longitude')
+                ->select(['id', 'location_name', 'occupation', 'radius', 'latitude', 'longitude'])
+                ->get();
+        $users = User::whereNotNull('latitude')
+                ->whereNotNull('longitude')
+                ->select(['id', 'name', 'email', 'latitude', 'longitude'])
+                ->get();
+
+        $newsData = Information::orderBy('created_at', 'desc')->take(5)->get();
+            return response()->json([
+                'zones' => $zones,
+                'users' => $users
+            ]);
     }
 
     /**
@@ -27,6 +41,7 @@ class zoneController extends Controller
     public function userView(){
         return view('users/viewZone');
     }
+
 
     /**
      * Store a newly created resource in storage.

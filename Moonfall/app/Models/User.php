@@ -28,8 +28,8 @@ class User extends Authenticatable
         'password',
 
     ];
-    public function applicants(){
-        return $this->hasMany(Applicant::class, 'applicant_id');
+    public function applicant(){
+        return $this->hasOne(Applicant::class, 'applicant_id');
     }
     public function volunteer(){
         return $this->belongsTo(Volunteer::class);

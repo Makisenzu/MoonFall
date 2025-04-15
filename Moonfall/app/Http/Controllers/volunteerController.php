@@ -18,6 +18,10 @@ class volunteerController extends Controller
         $approved = Applicant::where('status', 'Approved')->count();
         return view('admin/volunteer', compact('pending', 'approved', 'volunteerData'));
     }
+    public function viewApplicants(){
+        $applicants = Applicant::with('user')->get();
+        return view('admin/viewApplicant', compact('applicants'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -30,9 +34,31 @@ class volunteerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        //
+        try {
+            $data = $request->validate([
+                'status' => ['max:200',]
+            ]);
+
+            $data['applicant_id'] = $id;
+            Applicant::create($data);
+            return response()->json([
+                'success' => true,
+                'message' => 'Applied Successfully'
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation Failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred. Please try again. ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -56,7 +82,29 @@ class volunteerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $applicantInfo = Applicant::FindOrFail($id);
+            $userData = $request->validate([
+                'status' => ['required', 'in:Pending,Approved,Denied'],
+            ]);
+            $applicantInfo->update($userData);
+            return response()->json([
+                'success' => true,
+                'message' => 'Approved Successfully',
+                'status' => $applicantInfo->status
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation Failed',
+                'errors' => $e->errors()
+            ], 422);
+        }catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred. Please try again. ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

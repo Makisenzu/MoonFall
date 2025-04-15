@@ -15,10 +15,28 @@ class adminController extends Controller
      */
     public function index()
     {
+        $userData = User::whereNotNull('latitude')
+                      ->whereNotNull('longitude')
+                      ->where('role', '!=', 'admin')
+                      ->select(['id', 'name', 'email', 'latitude', 'longitude'])
+                      ->get();
+        
+        $zoneData = Zone::whereNotNull('latitude')
+                      ->whereNotNull('longitude')
+                      ->select(['id', 'location_name', 'occupation', 'radius', 'latitude', 'longitude'])
+                      ->get();
+        
         $userCount = User::where('role', '!=', 'admin')->count();
         $zoneCount = Zone::count();
         $volunteerCount = Volunteer::count();
-        return view('admin/adminIndex', compact('userCount', 'zoneCount', 'volunteerCount'));
+        
+        return view('admin/adminIndex', compact(
+            'userCount', 
+            'zoneCount', 
+            'volunteerCount', 
+            'userData', 
+            'zoneData'
+        ));
     }
 
     /**

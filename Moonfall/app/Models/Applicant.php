@@ -11,6 +11,6 @@ class Applicant extends Model
         'status'
     ];
     public function user(){
-        return $this->belongsTo(User::class, 'applicant_id', 'id');
+        return $this->belongsTo(User::class, 'applicant_id');
     }
 }
