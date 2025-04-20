@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewsAlert;
 use App\Models\Information;
 use Illuminate\Http\Request;
 
@@ -36,6 +37,7 @@ class informationController extends Controller
         ]);
 
         $newsData = Information::create($data);
+        event(new NewsAlert($newsData));
         if ($request->wantsJson()){
             return response()->json([
                 'success' => true,

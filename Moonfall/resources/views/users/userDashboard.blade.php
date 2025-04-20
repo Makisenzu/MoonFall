@@ -69,7 +69,79 @@
     </div>
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>     --}}
 <script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+    if (!window.Echo) {
+        console.error('Echo is not initialized!');
+        return;
+    }
+    const connection = window.Echo.connector.pusher.connection;
+
+    connection.bind('state_change', (state) => {
+        console.log('Connection state:', state.current);
+    });
+    console.log(window.Echo);
+    
+    connection.bind('connected', () => {
+        console.log('✅ Fully connected to Reverb server');
+    });
+    const channel = window.Echo.channel('news.alert');
+    channel.listen('.news.alert', (data)=>{
+        console.log('📢 NEWS EVENT RECEIVED:', data);
+        document.body.style.border = '5px solid ' + 
+            (data.urgency === 'high' ? 'red' : 
+             data.urgency === 'medium' ? 'orange' : 'green');
+        setTimeout(() => document.body.style.border = '', 10000);
+
+
+        showNewsNotification(data);
+        addNewsToDashboard(data);
+    })
+    .error((err)=>{
+        console.error('Channel error:', err);
+    });
+    window.testChannel = () => {
+        channel.whisper('test', { time: new Date().toISOString() });
+    };
+
+    function showNewsNotification(news) {
+        const urgencyClass = news.urgency === 'high' ? 'danger' : 
+                          news.urgency === 'medium' ? 'warning' : 'success';
+        
+        const content = `
+            <strong>${news.news_name}</strong>
+            <p>${news.description}</p>
+            <span class="badge bg-${urgencyClass}">${news.urgency}</span>
+            <small>${new Date(news.created_at).toLocaleString()}</small>
+        `;
+        
+        showNotification('News Alert', content, urgencyClass);
+    }
+    function showNotification(title, content, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type} notification`;
+        notification.innerHTML = `
+            <div class="notification-header">
+                <h4>${title}</h4>
+                <button class="close">&times;</button>
+            </div>
+            <div class="notification-body">${content}</div>
+        `;
+        
+        notification.querySelector('.close').addEventListener('click', () => {
+            notification.remove();
+        });
+        
+        const container = document.getElementById('notifications-container') || 
+                         document.querySelector('.card-header');
+        container.append(notification);
+        
+        setTimeout(() => notification.remove(), 10000);
+    }
+});
+
     const map = L.map('map').setView([8.51018945, 125.97101827], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     }).addTo(map);
@@ -160,5 +232,25 @@
     #map {
         z-index: 1;
     }
+    .new-item {
+        background-color: rgba(25, 135, 84, 0.1);
+        border-left: 4px solid #198754;
+        transition: all 0.3s ease;
+    }
+    
+    .pulse {
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+    
+    /* Toastr customization */
+    .toast-error { background-color: #dc3545; }
+    .toast-warning { background-color: #ffc107; color: #212529; }
+    .toast-info { background-color: #0dcaf0; }
 </style>
 @endsection

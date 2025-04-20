@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/user.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.15.3/dist/echo.iife.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pusher-js@7.6.0/dist/web/pusher.min.js"></script>
+    @vite(['resources/js/app.js'])
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MoonFall Preparedness</title>
     @yield('styles')
@@ -125,5 +128,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
     @yield('scripts')
+    
 </body>
 </html>
