@@ -7,6 +7,29 @@
     <div class="card-body p-0">
         <div id="safeZoneMap" style="height: 500px; width: 100%;"></div>
     </div>
+    <div class="card-footer bg-light">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="d-flex flex-wrap">
+                    <div class="me-4 mb-2">
+                        <span class="badge bg-success me-1">&nbsp;</span> Evacuation
+                    </div>
+                    <div class="me-4 mb-2">
+                        <span class="badge bg-primary me-1">&nbsp;</span> Food Zone
+                    </div>
+                    <div class="me-4 mb-2">
+                        <span class="badge bg-warning me-1">&nbsp;</span> Hospital Zone
+                    </div>
+                    <div class="me-4 mb-2">
+                        <span class="badge bg-danger me-1">&nbsp;</span> Danger Zone
+                    </div>
+                    <div class="me-4 mb-2">
+                        <span class="badge bg-secondary me-1">&nbsp;</span> Police Zone
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="card shadow-sm">
@@ -30,6 +53,7 @@
                             <option value="Police">Police Station</option>
                             <option value="Evacuation">Evacuation Center</option>
                             <option value="Danger">Danger Zone</option>
+                            <option value="Food">Food Zone</option>
                         </select>
                     </div>
                 </div>

@@ -53,7 +53,7 @@
                                             <i class="fas fa-user me-2"></i> Profile
                                         </a>
                                     </li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-newspaper me-2"></i> News</a></li>
+                                    {{-- <li><a class="dropdown-item" href="#"><i class="fas fa-newspaper me-2"></i> News</a></li> --}}
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <a class="dropdown-item" href="{{ route('userLogout') }}">

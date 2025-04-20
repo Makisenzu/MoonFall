@@ -89,10 +89,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <td>
-                                    <img src="" alt="" width="50px" height="50px">
-                                </td>
-                                <td>Role</td>
+                                @foreach ($volunteers as $volunteer)
+                                <tr>
+                                    <td>
+                                        ds
+                                        {{-- @if($volunteer->user->picture)
+                                            <img src="{{ asset('storage/'.$volunteer->user->picture) }}" 
+                                                 alt="Profile Picture" 
+                                                 width="50" 
+                                                 height="50"
+                                                 class="rounded-circle">
+                                        @else
+                                            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center" 
+                                                 style="width: 50px; height: 50px;">
+                                                <i class="bi bi-person text-white"></i>
+                                            </div>
+                                        @endif --}}
+                                    </td>
+                                    {{-- <td>{{ $volunteer->user->name }} {{ $volunteer->user->lastname }}</td>
+                                    <td>{{ $volunteer->user->email }}</td>
+                                    <td>{{ $volunteer->user->phone_number }}</td> --}}
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

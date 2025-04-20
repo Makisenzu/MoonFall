@@ -32,7 +32,7 @@ class User extends Authenticatable
         return $this->hasOne(Applicant::class, 'applicant_id');
     }
     public function volunteer(){
-        return $this->belongsTo(Volunteer::class);
+        return $this->hasOne(Volunteer::class, 'users_id');
     }
 
     /**

@@ -24,10 +24,11 @@ class zoneController extends Controller
                 ->get();
 
         $newsData = Information::orderBy('created_at', 'desc')->take(5)->get();
-            return response()->json([
-                'zones' => $zones,
-                'users' => $users
-            ]);
+        return response()->json($zones);
+            // return response()->json([
+            //     'zones' => $zones,
+            //     'users' => $users
+            // ]);
     }
 
     /**
@@ -50,7 +51,7 @@ class zoneController extends Controller
     {
         $validated = $request->validate([
             'location_name' => 'required|string|max:255',
-            'occupation' => 'required',
+            'occupation' => 'required|in:Food,Danger,Hospital,Evacuation,Police',
             'latitude' => 'required|numeric|between:-90,90',
             'longitude' => 'required|numeric|between:-180,180',
             'radius' => 'required|integer|min:100|max:30000'

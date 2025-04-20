@@ -11,10 +11,28 @@
                 <div class="card-body">
                     <div id="map" style="height: 400px;" class="w-100 border rounded"></div>
                 </div>
-                <div class="card-footer d-flex justify-content-between">
-                    <button id="locate-btn" class="btn btn-sm btn-outline-secondary">
-                        <i class="fa fa-location-arrow"></i> Find My Location
-                    </button>
+                <div class="card-footer bg-light">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="d-flex flex-wrap">
+                                <div class="me-4 mb-2">
+                                    <span class="badge bg-success me-1">&nbsp;</span> Evacuation
+                                </div>
+                                <div class="me-4 mb-2">
+                                    <span class="badge bg-primary me-1">&nbsp;</span> Food Zone
+                                </div>
+                                <div class="me-4 mb-2">
+                                    <span class="badge bg-warning me-1">&nbsp;</span> Hospital Zone
+                                </div>
+                                <div class="me-4 mb-2">
+                                    <span class="badge bg-danger me-1">&nbsp;</span> Danger Zone
+                                </div>
+                                <div class="me-4 mb-2">
+                                    <span class="badge bg-secondary me-1">&nbsp;</span> Police Zone
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

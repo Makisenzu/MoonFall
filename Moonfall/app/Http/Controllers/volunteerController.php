@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Applicant;
 use App\Models\Volunteer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB as Escape;
 
 class volunteerController extends Controller
 {
@@ -16,7 +18,8 @@ class volunteerController extends Controller
         $volunteerData = Volunteer::with('user')->count();
         $pending = Applicant::where('status', 'Pending')->count();
         $approved = Applicant::where('status', 'Approved')->count();
-        return view('admin/volunteer', compact('pending', 'approved', 'volunteerData'));
+        $volunteers = Volunteer::with('user')->get();
+        return view('admin/volunteer', compact('pending', 'approved', 'volunteerData', 'volunteers'));
     }
     public function viewApplicants(){
         $applicants = Applicant::with('user')->get();
@@ -83,11 +86,21 @@ class volunteerController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $applicantInfo = Applicant::FindOrFail($id);
+            $applicantInfo = Applicant::with('user')->FindOrFail($id);
             $userData = $request->validate([
                 'status' => ['required', 'in:Pending,Approved,Denied'],
             ]);
+            Escape::beginTransaction();
+
             $applicantInfo->update($userData);
+            if ($userData['status'] === 'Approved') {
+                Volunteer::create([
+                    'users_id' => $applicantInfo->applicant_id,
+                    'created_at' => now(),
+                ]);
+            }
+
+            Escape::commit();
             return response()->json([
                 'success' => true,
                 'message' => 'Approved Successfully',

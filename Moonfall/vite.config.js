@@ -10,4 +10,10 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    define: {
+        'process.env': {
+            VITE_REVERB_APP_KEY: JSON.stringify(process.env.REVERB_APP_KEY),
+            VITE_REVERB_PORT: JSON.stringify(process.env.REVERB_PORT),
+        }
+    },
 });

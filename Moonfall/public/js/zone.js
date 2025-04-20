@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const map = L.map('safeZoneMap').setView([8.50449271, 125.97699206], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
     const zoneLayers = [];
@@ -14,10 +13,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function getZoneColor(occupation) {
         switch(occupation) {
             case 'Danger': return '#ff3030';
-            case 'Hospital': return '#ee82ee';
+            case 'Hospital': return '#ffde59';
             case 'Evacuation': return '#98fb98';
             case 'Police': return '#91a3b0';
-            default: return '#30a2ff'; 
+            case 'Food': return '0f72bb';
+            default: return '#0f72bb'; 
         }
     }
 
