@@ -95,7 +95,7 @@
             <hr class="my-4 border-secondary">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-0 text-secondary small">&copy; 2025 MoonFall Preparedness. All rights reserved.</p>
+                    <p class="mb-0 text-secondary small">&copy; 2025 Crescent Project.</p>
                 </div>
             </div>
         </div>

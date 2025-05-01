@@ -13,7 +13,7 @@
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
     <link rel="icon" type="image/png" href="">
-    <title>MoonFall Admin</title>
+    <title>Crescent Admin</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header class="navbar navbar-dark bg-dark sticky-top shadow-sm">
@@ -22,7 +22,7 @@
                 <i class="fa-solid fa-moon"></i>
             </button>
             <a class="navbar-brand d-flex align-items-center" href="#">
-                <span class="fw-bold">MoonFall Admin</span>
+                <span class="fw-bold">Crescent Admin</span>
             </a>
             <div class="ms-auto d-flex">
                 <div class="dropdown ms-3">

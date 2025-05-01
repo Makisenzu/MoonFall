@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'MoonFall Preparedness App')</title>
+    <title>@yield('title', 'Crescent Preparedness App')</title>
     @yield('styles')
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
@@ -16,7 +16,7 @@
             <div class="container">
                 <a class="navbar-brand" href="#">
                     <i class="fas fa-moon me-2 text-dark"></i>
-                    <span class="fw-bold">MoonFall Preparedness</span>
+                    <span class="fw-bold">Crescent Preparedness</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -59,7 +59,7 @@
             <hr class="my-4 border-secondary">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-0 text-secondary small">&copy; 2025 MoonFall Preparedness. All rights reserved.</p>
+                    <p class="mb-0 text-secondary small">&copy; 2025 Crescent Project.</p>
                 </div>
             </div>
         </div>
