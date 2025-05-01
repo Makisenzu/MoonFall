@@ -79,6 +79,29 @@ class volunteerController extends Controller
     {
         //
     }
+    public function denied(Request $request, string $id)
+    {
+        $applicant = Applicant::with('user')->findOrFail($id);
+        $userData = $request->validate([
+            'status' => ['required'],
+        ]);
+        $applicant->update($userData);
+    
+        if (!$applicant) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Applicant not found',
+            ], 404);
+        }
+    
+        $applicant->status = 'Denied';
+        $applicant->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Removed Successfully',
+            'status' => $applicant->status,
+        ]);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -96,6 +119,8 @@ class volunteerController extends Controller
             if ($userData['status'] === 'Approved') {
                 Volunteer::create([
                     'users_id' => $applicantInfo->applicant_id,
+                    'latitude' => $applicantInfo->user->latitude,
+                    'longitude' => $applicantInfo->user->longitude,
                     'created_at' => now(),
                 ]);
             }
@@ -119,6 +144,33 @@ class volunteerController extends Controller
             ], 500);
         }
     }
+    public function removeVolunteer(string $id)
+    {
+        $applicant = Applicant::where('applicant_id', $id)->first();
+    
+        if (!$applicant) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Applicant not found',
+            ], 404);
+        }
+    
+        $applicant->status = 'Removed';
+        $applicant->save();
+
+        $volunteer = Volunteer::where('users_id', $id)->first();
+    
+        if ($volunteer) {
+            $volunteer->delete();
+        }
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Removed Successfully',
+            'status' => $applicant->status,
+        ]);
+    }
+    
 
     /**
      * Remove the specified resource from storage.

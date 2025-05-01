@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Zone;
 use App\Models\Applicant;
 use App\Models\Information;
+use App\Models\Volunteer;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\Auth;
@@ -22,10 +24,16 @@ class userController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($id)
     {
-        $newsData = Information::all();
-        return view('users/userDashboard', compact('newsData'));
+        // $newsData = Information::where('audience', 'Civilian')->get();
+        $isVolunteer = Volunteer::where('users_id', $id)->exists();
+        $newsData = $isVolunteer
+        ? Information::whereIn('audience', ['civilian', 'volunteer'])->get()
+        : Information::where('audience', 'civilian')->get();
+        $zoneData = Zone::all();
+        $audience = Volunteer::where('users_id', $id)->exists() ? 'volunteer' : 'civilian';
+        return view('users/userDashboard', compact('newsData', 'zoneData', 'audience'));
     }
     public function login(Request $request)
     {
@@ -48,7 +56,7 @@ class userController extends Controller
             if($user->role == 'admin'){
                 return redirect()->route('adminIndex')->with('success', 'Hello Admin!');
             }else{
-                return redirect()->route('userDashboardCreate')->with('success', 'Login Successfully');
+                return redirect()->route('userDashboardCreate', $user->id)->with('success', 'Login Successfully');
             }
         }
     
@@ -67,6 +75,8 @@ class userController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'lastname' => ['required', 'string', 'max:255'],
                 'password' => ['required', 'string', 'min:8', 'max:16'],
+                'latitude' => ['required', 'numeric'],
+                'longitude' => ['required', 'numeric'],
                 'email' => ['required', 'email', 'max:255', 'unique:users'],
                 'phone_number' => ['required', 'unique:users','string', 'regex:/^[0-9]+$/', 'min:7', 'max:15'],
                 'birthday' => ['required', 'date', 'before_or_equal:' . now()->subYears(13)->format('Y-m-d')],

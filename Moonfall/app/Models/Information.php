@@ -9,6 +9,7 @@ class Information extends Model
     protected $fillable = [
         'news_name',
         'description',
-        'urgency'
+        'urgency',
+        'audience',
     ];
 }

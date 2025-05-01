@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('news_name')->nullable();
             $table->longText('description')->nullable();
             $table->string('urgency')->nullable();
+            $table->string('audience')->nullable();
             $table->timestamps();
         });
     }

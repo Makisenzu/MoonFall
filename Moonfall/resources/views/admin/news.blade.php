@@ -85,49 +85,18 @@
                             <option value="Critical">Critical</option>
                         </select>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save News</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="editNewsModal" tabindex="-1" aria-labelledby="editNewsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form id="editNewsForm">
-                @csrf
-                <input type="hidden" id="edit_news_id" name="news_id">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editNewsModalLabel">Edit News Article</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
                     <div class="mb-3">
-                        <label for="edit_news_name" class="form-label">News Title</label>
-                        <input type="text" class="form-control" id="edit_news_name" name="news_name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_description" class="form-label">Description</label>
-                        <textarea class="form-control" id="edit_description" name="description" rows="5" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_urgency" class="form-label">Urgency Level</label>
-                        <select class="form-select" id="edit_urgency" name="urgency" required>
-                            <option value="">Select Urgency Level</option>
-                            <option value="Low">Low</option>
-                            <option value="Medium">Medium</option>
-                            <option value="High">High</option>
-                            <option value="Critical">Critical</option>
+                        <label for="urgency" class="form-label">Audience</label>
+                        <select class="form-select" id="audience" name="audience" required>
+                            <option value="">Select Audience</option>
+                            <option value="Volunteer">Volunteer</option>
+                            <option value="Civilian">Civilian</option>
                         </select>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update News</button>
+                    <button type="submit" class="btn btn-primary">Save News</button>
                 </div>
             </form>
         </div>

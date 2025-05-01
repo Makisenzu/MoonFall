@@ -23,7 +23,7 @@
                             <tr data-status="{{ $applicant->status }}">
                                 <td>
                                     @if($applicant->user->picture)
-                                        <img src="{{ asset('storage/'.$applicant->user->picture) }}" alt="Profile" class="rounded-circle" width="50" height="50" style="object-fit: cover;">
+                                        <img src="{{ asset('uploads/' . $applicant->user->picture) }}" alt="Profile" class="rounded-circle" width="50" height="50" style="object-fit: cover;">
                                     @else
                                         <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 50px; height: 50px;">
                                             <i class="bi bi-person"></i>
@@ -46,14 +46,12 @@
                                         <span class="badge bg-success">Approved</span>
                                     @elseif($applicant->status == 'Denied')
                                         <span class="badge bg-danger">Denied</span>
+                                    @else
+                                        <span class="badge bg-danger">Removed</span>
                                     @endif
                                 </td>
                                 <td>
                                     <div class="d-flex gap-2">
-                                        <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#volunteerDetailsModal" data-volunteer-id="{{ $applicant->id }}">
-                                            <i class="bi bi-eye"></i> View
-                                        </button>
-                                        
                                         @if($applicant->status == 'Pending')
                                             <form action="{{ route('approvedApplicant', $applicant->id) }}" method="POST" class="approve-form">
                                                 @csrf
@@ -64,19 +62,22 @@
                                                 </button>
                                             </form>
                                             
-                                            <form action="" method="POST">
+                                            <form class="deny-form" action="{{ route('applicationDenied', $applicant->id) }}" method="POST">
                                                 @csrf
+                                                @method('PUT')
+                                                <input type="hidden" value="Denied" name="status">
                                                 <button type="submit" class="btn btn-sm btn-danger">
                                                     <i class="bi bi-x-lg"></i> Deny
                                                 </button>
                                             </form>
-                                        @elseif($applicant->status == 'approved' || $applicant->status == 'denied')
-                                            <form action="" method="POST">
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-secondary">
-                                                    <i class="bi bi-arrow-counterclockwise"></i> Reset
-                                                </button>
-                                            </form>
+                                        @elseif($applicant->status == 'Approved')
+                                        <button type="button" disabled class="btn btn-secondary">
+                                            <i class="bi bi-eye"></i> Approved
+                                        </button>
+                                        @else
+                                        <button type="button" disabled class="btn btn-secondary">
+                                            <i class="bi bi-eye"></i> None
+                                        </button>
                                         @endif
                                     </div>
                                 </td>

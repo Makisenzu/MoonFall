@@ -8,7 +8,7 @@
                     <h4 class="mb-0">Profile Information</h4>
                     
                     @if (!$applicants->contains('applicant_id', $userData->id))
-                        <form action="{{ route('volunteerStore', $userData->id) }}" method="POST">
+                        <form id="apply" action="{{ route('volunteerStore', $userData->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-success">
                                 <i class="bi bi-person-plus"></i> Apply as Volunteer
@@ -21,8 +21,10 @@
                                 <span class="badge bg-warning">Application Pending</span>
                             @elseif ($applicant->status == 'Approved')
                                 <span class="badge bg-success">Approved Volunteer</span>
-                            @elseif ($applicant->status == 'Rejected')
+                            @elseif ($applicant->status == 'Denied')
                                 <span class="badge bg-danger">Application Rejected</span>
+                            @else
+                                <span class="badge bg-danger">Removed</span>
                             @endif
                         @endforeach
                     @endif
@@ -83,13 +85,13 @@
                             </div>
                             @if(isset($userData->picture) && $userData->picture)
                                 <div class="mt-2">
-                                    <img src="{{ asset('storage/'.$userData->picture) }}" alt="Current profile picture" class="img-thumbnail" style="max-height: 100px">
+                                    <img src="{{ asset('uploads/' . $userData->picture) }}" alt="Current profile picture" class="img-thumbnail" style="max-height: 100px">
                                 </div>
                             @endif
                         </div>
                         
                         <div class="d-flex gap-3">
-                            <a href="{{ route('userDashboardCreate') }}" class="btn btn-secondary btn-lg flex-grow-1">Go Back</a>
+                            <a href="{{ route('userDashboardCreate', $userData->id) }}" class="btn btn-secondary btn-lg flex-grow-1">Go Back</a>
                             <button type="submit" name="action" value="update" class="btn btn-primary btn-lg flex-grow-1">
                                 <i class="bi bi-check-circle"></i> Update Information
                             </button>
@@ -100,6 +102,13 @@
         </div>
     </div>
 </div>
-@endsection
-
 <script src="{{ asset('js/profile.js') }}"></script>
+@if(session('success'))
+    <input type="hidden" id="successMessage" value="{{ session('success') }}">
+@endif
+
+@if(session('error'))
+    <input type="hidden" id="errorMessage" value="{{ session('error') }}">
+@endif
+
+@endsection

@@ -6,12 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
     <link rel="stylesheet" href="{{ asset('css/user.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.15.3/dist/echo.iife.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pusher-js@7.6.0/dist/web/pusher.min.js"></script>
     @vite(['resources/js/app.js'])
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>MoonFall Preparedness</title>
+    <title>Crescent</title>
     @yield('styles')
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
@@ -20,7 +22,7 @@
             <div class="container">
                 <a class="navbar-brand" href="#">
                     <i class="fas fa-moon me-2 text-dark"></i>
-                    <span class="fw-bold">MoonFall Preparedness</span>
+                    <span class="fw-bold">Crescent</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -81,31 +83,6 @@
             </div>
         </nav>
     </header>
-
-    {{-- @auth
-    <div class="bg-dark text-white">
-        <div class="container">
-            <div class="row align-items-center py-2">
-                <div class="col-md-6">
-                    <h5 class="mb-0"><i class="fas fa-tachometer-alt me-2"></i> User Control Panel</h5>
-                </div>
-                <div class="col-md-6">
-                    <ul class="nav justify-content-md-end justify-content-center user-panel-nav">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link text-white"><i class="fas fa-shield-alt me-1"></i> Safe Zone</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link text-white"><i class="fas fa-hands-helping me-1"></i> Apply for Volunteer</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link text-white"><i class="fas fa-newspaper me-1"></i> News</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endauth --}}
     
     <main class="flex-grow-1 py-5">
         <div class="container">
@@ -126,6 +103,11 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
     @yield('scripts')
     

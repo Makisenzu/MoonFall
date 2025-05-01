@@ -34,6 +34,7 @@ class informationController extends Controller
             'news_name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
             'urgency' => ['required', 'string', 'max:255'],
+            'audience' => ['required', 'string', 'max:255'],
         ]);
 
         $newsData = Information::create($data);

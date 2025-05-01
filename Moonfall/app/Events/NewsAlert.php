@@ -31,7 +31,7 @@ class NewsAlert implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new Channel('news.alert'),
+            new Channel('news.alert.'. strtolower($this->news->audience)),
         ];
     }
     public function broadcastAs(): string
@@ -45,6 +45,7 @@ class NewsAlert implements ShouldBroadcastNow
             'title' => $this->news->news_name,
             'description' => $this->news->description,
             'urgency' => $this->news->urgency,
+            'audience' => $this->news->audience,
             'created_at' => $this->news->created_at->toDateTimeString()
         ];
     }

@@ -14,7 +14,7 @@ Route::get('/', function () {
 
 Route::post('/userSignup', [userController::class, 'store'])->name('userStore');
 Route::post('/user', [userController::class, 'login'])->name('userLogin');
-Route::get('/userDashboard', [userController::class, 'create'])->name('userDashboardCreate');
+Route::get('/userDashboard/{id}', [userController::class, 'create'])->name('userDashboardCreate');
 Route::get('/adminIndex', [adminController::class, 'index'])->name('adminIndex');
 Route::get('/admin/zone', [zoneController::class, 'create'])->name('adminZoneIndex');
 Route::get('/zones', [zoneController::class, 'index']);
@@ -37,3 +37,5 @@ Route::put('user/update/{id}', [userController::class, 'update'])->name('userUpd
 Route::post('user/applied/{id}', [volunteerController::class, 'store'])->name('volunteerStore');
 Route::get('admin/applicants',[volunteerController::class, 'viewApplicants'])->name('viewApplicants');
 Route::put('admin/applicant/approved/{id}', [volunteerController::class, 'update'])->name('approvedApplicant');
+Route::put('admin/removeVolunteer/{id}', [volunteerController::class, 'removeVolunteer'])->name('removeVolunteer');
+Route::put('admin/denied/{id}', [volunteerController::class, 'denied'])->name('applicationDenied');

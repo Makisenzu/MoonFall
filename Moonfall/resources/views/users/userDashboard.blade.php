@@ -1,5 +1,57 @@
 @extends('layouts.userLayout')
 @section('content')
+<style>
+    .legend-badge {
+      width: 15px;
+      height: 15px;
+      display: inline-block;
+      border-radius: 3px;
+      margin-right: 5px;
+    }
+    .custom-marker {
+      background: transparent;
+      border: none;
+    }
+    #map {
+      height: 500px;
+      width: 100%;
+      z-index: 1;
+      position: relative;
+    }
+    .map-container {
+      position: relative;
+      height: 500px;
+      width: 100%;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .news-item {
+      border-bottom: 1px solid rgba(0,0,0,.125);
+      padding: 16px;
+    }
+    .news-item:last-child {
+      border-bottom: none;
+    }
+    .new-item {
+      background-color: rgba(25, 135, 84, 0.1);
+      border-left: 4px solid #198754;
+      transition: all 0.3s ease;
+    }
+    .urgency-badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+    }
+    .pulse {
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+  </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <div class="container-fluid py-4">
     <div class="row mb-4">
@@ -8,8 +60,9 @@
                 <div class="card-header bg-warning text-white">
                     <h5 class="card-title mb-0">Interactive Map</h5>
                 </div>
+                <input type="hidden" id="newsAudience" value="{{ \App\Models\Volunteer::where('users_id', auth()->id())->exists() ? 'volunteer' : 'civilian' }}">
                 <div class="card-body">
-                    <div id="map" style="height: 400px;" class="w-100 border rounded"></div>
+                    <div id="allMap" style="height: 400px;" class="w-100 border rounded"></div>
                 </div>
                 <div class="card-footer bg-light">
                     <div class="row">
@@ -33,6 +86,7 @@
                             </div>
                         </div>
                     </div>
+                    <button type="button" id="routeButton" class="btn btn-success">Route</button>
                 </div>
             </div>
         </div>
@@ -40,188 +94,57 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Latest News</h5>
-                </div>
-                <div class="card-body p-0">
-                    <div class="list-group list-group-flush">                       
-                        <div class="list-group-item p-3">
-                            <div class="row align-items-center">
-                                <div class="col-md-9 col-lg-10">
-                                    @foreach ($newsData as $data)
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">{{ $data->news_name }}</h5>
-                                        <small class="text-muted"></small>
-                                    </div>
-                                    <p class="mb-1">{{ $data->description }}</p>
-                                    <div class="d-flex justify-content-between align-items-center mt-2">
-                                        <small class="text-muted">Urgency: {{ $data->urgency }}</small>
-                                    </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          <div class="card">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">Emergency Updates</h5>
             </div>
+            @foreach ($newsData as $news)
+            <div class="card-body p-0">
+                <div class="news-container">
+                  <div class="news-item">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <h5 class="mb-1">{{$news->news_name}}</h5>
+                      <span class="badge bg-primary">{{ $news->created_at->diffForHumans() }}</span>
+                    </div>
+                    <p class="mb-2">{{$news->description}}.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        @if($news->urgency == 'High')
+                          <span class="badge bg-danger urgency-badge">High Priority</span>
+                        @elseif($news->urgency == 'Medium')
+                          <span class="badge bg-warning text-dark urgency-badge">Medium Priority</span>
+                        @else
+                          <span class="badge bg-info text-dark urgency-badge">Low Priority</span>
+                        @endif
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            @endforeach
+            <input type="text" name="LatitudeFrom" id="LatitudeFrom" hidden>
+            <input type="text" name="LongitudeFrom" id="LongitudeFrom" hidden>
+            <input type="text" name="latitudeInput" id="latitudeInput" hidden>
+            <input type="text" name="longitudeInput" id="longitudeInput" hidden>
+          </div>
         </div>
+      </div>
     </div>
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>     --}}
+
 <script>
-    
-    document.addEventListener('DOMContentLoaded', function() {
-    if (!window.Echo) {
-        console.error('Echo is not initialized!');
-        return;
-    }
-    const connection = window.Echo.connector.pusher.connection;
-
-    connection.bind('state_change', (state) => {
-        console.log('Connection state:', state.current);
-    });
-    console.log(window.Echo);
-    
-    connection.bind('connected', () => {
-        console.log('✅ Fully connected to Reverb server');
-    });
-    const channel = window.Echo.channel('news.alert');
-    channel.listen('.news.alert', (data)=>{
-        console.log('📢 NEWS EVENT RECEIVED:', data);
-        document.body.style.border = '5px solid ' + 
-            (data.urgency === 'high' ? 'red' : 
-             data.urgency === 'medium' ? 'orange' : 'green');
-        setTimeout(() => document.body.style.border = '', 10000);
-
-
-        showNewsNotification(data);
-        addNewsToDashboard(data);
-    })
-    .error((err)=>{
-        console.error('Channel error:', err);
-    });
-    window.testChannel = () => {
-        channel.whisper('test', { time: new Date().toISOString() });
+    window.APP_CONFIG = {
+        apiKey: "{{ env('MAPBOX_API_KEY') }}"
     };
-
-    function showNewsNotification(news) {
-        const urgencyClass = news.urgency === 'high' ? 'danger' : 
-                          news.urgency === 'medium' ? 'warning' : 'success';
-        
-        const content = `
-            <strong>${news.news_name}</strong>
-            <p>${news.description}</p>
-            <span class="badge bg-${urgencyClass}">${news.urgency}</span>
-            <small>${new Date(news.created_at).toLocaleString()}</small>
-        `;
-        
-        showNotification('News Alert', content, urgencyClass);
-    }
-    function showNotification(title, content, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `alert alert-${type} notification`;
-        notification.innerHTML = `
-            <div class="notification-header">
-                <h4>${title}</h4>
-                <button class="close">&times;</button>
-            </div>
-            <div class="notification-body">${content}</div>
-        `;
-        
-        notification.querySelector('.close').addEventListener('click', () => {
-            notification.remove();
-        });
-        
-        const container = document.getElementById('notifications-container') || 
-                         document.querySelector('.card-header');
-        container.append(notification);
-        
-        setTimeout(() => notification.remove(), 10000);
-    }
-});
-
-    const map = L.map('map').setView([8.51018945, 125.97101827], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    }).addTo(map);
-    function getZoneColor(occupation) {
-        const colors = {
-            'Danger': '#ff3030',
-            'Hospital': '#ee82ee',
-            'Evacuation': '#98fb98',
-            'Police': '#91a3b0',
-            'Default': '#30a2ff'
-        };
-        return colors[occupation] || colors['Default'];
-    }
-    function createMarkerIcon(color) {
-        return L.divIcon({
-            className: 'custom-marker',
-            html: `<svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-                     <path fill="${color}" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                   </svg>`,
-            iconSize: [24, 24],
-            iconAnchor: [12, 24]
-        });
-    }
-
-    function loadZones() {
-        fetch('/zones')
-            .then(response => response.json())
-            .then(zones => {
-                zones.forEach(zone => {
-                    const color = getZoneColor(zone.occupation);
-                    const marker = L.marker([zone.latitude, zone.longitude], {
-                        icon: createMarkerIcon(color)
-                    }).addTo(map)
-                      .bindPopup(`
-                          <b>${zone.location_name}</b><br>
-                          Type: ${zone.occupation}<br>
-                          ${zone.radius ? 'Radius: ' + zone.radius + 'm' : ''}
-                      `);
-                    if (zone.radius) {
-                        L.circle([zone.latitude, zone.longitude], {
-                            radius: zone.radius,
-                            color: color,
-                            fillColor: color,
-                            fillOpacity: 0.2,
-                            weight: 2
-                        }).addTo(map);
-                    }
-                });
-                if (zones.length > 0) {
-                    const bounds = zones.map(zone => [zone.latitude, zone.longitude]);
-                    map.fitBounds(bounds, { padding: [50, 50] });
-                }
-            })
-            .catch(error => {
-                console.error('Error loading zones:', error);
-                alert('Failed to load zones. Please try again later.');
-            });
-    }
-    loadZones();
-    document.getElementById('locate-btn').addEventListener('click', function() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    const { latitude, longitude } = position.coords;
-                    map.setView([latitude, longitude], 15);
-
-                    L.marker([latitude, longitude], {
-                        icon: createMarkerIcon('#ff00ff')
-                    })
-                    .addTo(map)
-                    .bindPopup('Your location')
-                    .openPopup();
-                },
-                function(error) {
-                    alert('Error getting your location: ' + error.message);
-                }
-            );
-        } else {
-            alert('Geolocation is not supported by your browser');
-        }
+</script>
+<script>
+    window.userRole = @json($audience);
+    window.shelters = @json($zoneData);
+</script>
+<script src="{{ asset('js/userDashboard.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        initMap();
     });
 </script>
 <style>
@@ -248,7 +171,6 @@
         100% { transform: scale(1); }
     }
     
-    /* Toastr customization */
     .toast-error { background-color: #dc3545; }
     .toast-warning { background-color: #ffc107; color: #212529; }
     .toast-info { background-color: #0dcaf0; }
