@@ -56,12 +56,8 @@
             <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between">
                     <div>
-                        <p class="text-muted mb-1">Alerts</p>
-                        <h4 class="mb-0">2</h4>
-                        <p class="small text-danger mt-2 mb-0">
-                            <i class="fas fa-arrow-up me-1"></i>
-                            <span>2 new alerts</span>
-                        </p>
+                        <p class="text-muted mb-1">News</p>
+                        <h4 class="mb-0">{{$info}}</h4>
                     </div>
                     <div class="bg-danger bg-opacity-10 rounded-3 p-3">
                         <i class="fas fa-exclamation-triangle fa-2x text-danger"></i>

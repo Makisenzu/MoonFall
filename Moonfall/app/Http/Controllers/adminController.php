@@ -19,6 +19,7 @@ class adminController extends Controller
         $zoneData = Zone::all();
         $userCount = User::where('role', '!=', 'admin')->count();
         $zoneCount = Zone::count();
+        $info = Information::all()->count();
         $volunteerCount = Volunteer::count();
     
         return view('admin/adminIndex', compact(
@@ -26,7 +27,8 @@ class adminController extends Controller
             'zoneCount', 
             'volunteerCount', 
             'userData', 
-            'zoneData'
+            'zoneData',
+            'info'
         ));
     }
     

@@ -35,9 +35,9 @@
                                 <span class="badge bg-danger">{{$news->urgency}}</span>
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-sm btn-primary edit-news" data-id="{{ $news->id }}" title="Edit">
+                                {{-- <button class="btn btn-sm btn-primary edit-news" data-id="{{ $news->id }}" title="Edit">
                                     <i class="bi bi-pencil"></i> Edit
-                                </button>
+                                </button> --}}
                                 <form class="d-inline" action="{{ route('adminDeleteNews', $news->id) }}" id="deleteForm" method="POST">
                                     @csrf
                                     @method('DELETE')
